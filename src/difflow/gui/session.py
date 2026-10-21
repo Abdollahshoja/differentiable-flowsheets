@@ -714,11 +714,16 @@ class FlowsheetSession:
 
     def document(self) -> dict:
         from difflow import serialize
+        from difflow.gui.active_model import flowsheet_models
 
         if self.flowsheet is None:
             return {"flowsheet": None, "path": str(self.path or ""),
                     "source": str(self.source or ""), "dirty": False}
         document = serialize.to_dict(self.flowsheet, refs=self.bindings)
+        models = flowsheet_models(self.flowsheet)
+        for unit in document.get("units", []):
+            if unit["name"] in models:
+                unit["runtime_model"] = models[unit["name"]]
         document.setdefault("view", {})
         # Auto-layout underneath, stored positions on top. Not "one or the
         # other": the moment the user drags one node the flowsheet has a
@@ -976,13 +981,13 @@ class FlowsheetSession:
         from difflow.gui import edit
 
         def apply() -> dict:
-            unknown = sorted(set(changes) - {"params", "call_params", "name",
+            unknown = sorted(set(changes) - {"params", "call_params", "name", "equilibrium_model",
                                              "position"})
             if unknown:
                 raise edit.EditError(
                     f"cannot patch {', '.join(repr(u) for u in unknown)}; "
                     "a unit takes 'params', 'call_params', 'name' and "
-                    "'position'."
+                    "'position' and 'equilibrium_model'."
                 )
             u = edit.unit(self.flowsheet, name)
             # Everything is built and checked before anything is assigned.
@@ -996,6 +1001,12 @@ class FlowsheetSession:
                 if not isinstance(params, dict):
                     raise edit.EditError("'params' must be an object")
                 operation = edit.rebuild(u.operation, name, params)
+            if "equilibrium_model" in changes:
+                from difflow.gui.model_selection import select_model
+                try:
+                    operation = select_model(operation, changes["equilibrium_model"])
+                except (ValueError, KeyError, TypeError) as exc:
+                    raise edit.EditError(str(exc)) from exc
             call_params = changes.get("call_params")
             if call_params:
                 unit_params = edit.call_params(
@@ -1825,6 +1836,8 @@ class FlowsheetSession:
         caught = []
         try:
             with self._lock, warnings.catch_warnings(record=True) as caught:
+                from difflow.gui.active_model import flowsheet_models
+                models_used = flowsheet_models(self.flowsheet)
                 # Recorded, not printed: a TearToleranceWarning or a
                 # CSTRDensityWarning on the server's stderr is somewhere
                 # nobody using the editor or an agent is looking. The
@@ -1850,6 +1863,7 @@ class FlowsheetSession:
                 for name, stream in streams.items()
             },
             "species": list(getattr(fs, "species_order", []) or []),
+            **({"models_used": models_used} if models_used else {}),
             "converged": getattr(fs, "last_solve_converged", None),
             "iterations": getattr(fs, "last_solve_iterations", None),
             "method": getattr(fs, "last_solve_method", None),
@@ -2182,9 +2196,11 @@ class FlowsheetSession:
             import json
 
             from difflow import serialize
+            from difflow.gui.active_model import flowsheet_models
 
-            return json.dumps(serialize.to_dict(self.flowsheet,
+            return json.dumps({"document": serialize.to_dict(self.flowsheet,
                                                 refs=self.bindings),
+                               "active_models": flowsheet_models(self.flowsheet)},
                               sort_keys=True, default=str)
         except Exception:
             return None

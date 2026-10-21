@@ -64,7 +64,7 @@ class REEDatabase:
         if yaml_path is None:
             yaml_path = DATA_DIR / "elements.yaml"
 
-        with open(yaml_path) as f:
+        with open(yaml_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)
 
         self._elements: dict[str, REEElement] = {}
@@ -922,7 +922,7 @@ class ExtractantDatabase:
         if yaml_path is None:
             yaml_path = DATA_DIR / "extractants.yaml"
 
-        with open(yaml_path) as f:
+        with open(yaml_path, encoding="utf-8") as f:
             data = yaml.safe_load(f)
 
         self._extractants: dict[str, Extractant] = {}

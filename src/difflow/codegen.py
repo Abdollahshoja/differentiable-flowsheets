@@ -85,6 +85,12 @@ def _render(value: Any, where: str, imports: set[str]) -> str:
         )
         call = f"{spec['factory']}({args})"
         return f"{call}.{spec['attr']}" if spec.get("attr") else call
+    from difflow.eos import PengRobinson, SRK
+    if type(value) in (PengRobinson, SRK):
+        imports.add(type(value).__name__)
+        return (f"{type(value).__name__}("
+                f"{_render(value.species, where, imports)}, "
+                f"k_ij={_render(value.params.k_ij, where, imports)})")
     if hasattr(value, "_fields"):                       # a NamedTuple
         imports.add(type(value).__name__)
         inner = ", ".join(
@@ -286,10 +292,12 @@ def to_python(
                 fields = f"{splat}, {fields}" if fields else splat
             args.append(f"{params_cls.__name__}({fields})")
 
-        for extra in constructor_extras(cls):
+        from difflow.serialize import instance_extras
+        for extra in instance_extras(operation):
             value = getattr(operation, extra, None)
             if value is None:
                 continue
+            start = len(args)
             ref = _ref_for(value)
             if ref is not None:
                 args.append(ref[REF_TAG])
@@ -301,6 +309,8 @@ def to_python(
                 args.append(variable)
             else:
                 args.append(_render(value, f"{where}.{extra}", imports))
+            if extra not in constructor_extras(cls) and len(args) > start:
+                args[-1] = f"{extra}={args[-1]}"
 
         # `Unit.params` are passed to the operation on every call (a
         # Splitter's `split_frac`). Leaving them out gave a script that

@@ -1,0 +1,50 @@
+{
+  "base_commit": "086c56ec5c5ac242829f851b5a308dcdf33260b5",
+  "files": [
+    {
+      "path": "src/difflow/gui/active_model.py",
+      "before": null,
+      "after": "8a8672dcbfbac01f1466f8fbe706c46b00fcedc330165bd199b6a46e395af7e2"
+    },
+    {
+      "path": "src/difflow/gui/session.py",
+      "before": "7a9e22c281493112168c4a71ad4526627af0b73949ce144eb3f626bebe8ee1b4",
+      "after": "b0f794af6996589a0581c5ced7836a1cf533e3234776ef742c2b5faf11733d96"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/ActiveModel.svelte",
+      "before": null,
+      "after": "481f57eaae4c4b3ab7282906efe5a6b008647f4b17911f99f862d555f8947738"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/Inspector.svelte",
+      "before": "794a6ecc3327633bf0460612d70ea387f0e37e6b8e4c5edd91fd117a9c7eed2b",
+      "after": "eeae5ff858fe32f82a9c463dcda8aeb30b6823dbe1caa5504a20e6067010f8e0"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/Results.svelte",
+      "before": "5570de42c1b34d11090cf567e2a8f61201998fc3ce8deee98f0f58d90db3bf63",
+      "after": "1431be2045071759dc473b89666606c247cd3e5c3159b75212ddb4c6d4e35dae"
+    },
+    {
+      "path": "src/difflow/gui/static/app.css",
+      "before": "6bdea0847f8ada498df2e93c974d95465944880d94f26f23c1ea43d2c87a2bb2",
+      "after": "3be7b3091bd80193cad7152e1a8780252e6845816fb148c8bd81bf69a0629b82"
+    },
+    {
+      "path": "src/difflow/gui/static/app.js",
+      "before": "f031da15bd8f7a99f2126919e4b853ff61159005adff1815cd86f4a3b6f1f1ea",
+      "after": "07df90ffb31f127df71798f4cebd98fcb40ce40ae480973ef12db80b70b79f6b"
+    },
+    {
+      "path": "tests/test_gui_active_model.py",
+      "before": null,
+      "after": "5a54b75ab6ce4970e2f826a8fb8f2db432bdde15cc15c1e8744602a2670fbef7"
+    },
+    {
+      "path": "docs/gui-active-model.md",
+      "before": null,
+      "after": "171e90113a5af11cdc468a689bd146a752716b1055c65144025733dfaef8024c"
+    }
+  ]
+}

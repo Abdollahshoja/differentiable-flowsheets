@@ -10,6 +10,7 @@
   a parameter sweep.
 -->
 <script>
+  import ActiveModel from './ActiveModel.svelte'
   import { fmt, streamTable, tornado } from './model/results.js'
   import { ACCELERATIONS, solverValue } from './model/solver.js'
 
@@ -102,6 +103,14 @@
   </header>
 
   <div class="body">
+    {#if Object.keys(solve?.models_used ?? {}).length}
+      <details>
+        <summary>Models used for this solve</summary>
+        {#each Object.entries(solve.models_used) as [name, model] (name)}
+          <ActiveModel {model} heading={name} />
+        {/each}
+      </details>
+    {/if}
     {#if !solve && tab !== 'solve'}
       <p class="hint">Nothing solved yet. Press Solve.</p>
 

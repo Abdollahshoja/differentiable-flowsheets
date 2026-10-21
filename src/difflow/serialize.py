@@ -239,6 +239,12 @@ def _encode_value(value: Any, where: str) -> Any:
             "-- see difflow.kinetics.mass_action_kinetics for rate laws -- "
             "or drop the field before saving."
         )
+    from difflow.eos import PengRobinson, SRK
+    if type(value) in (PengRobinson, SRK):
+        return {"$eos": type(value).__name__,
+                "species": [[name, _encode_value(props, where)]
+                            for name, props in value.species.items()],
+                "k_ij": _encode_value(value.params.k_ij, where)}
     if hasattr(value, "_fields"):
         # a NamedTuple -- SpeciesData and friends. This must precede the
         # tuple branch below, which would erase the class.
@@ -274,6 +280,14 @@ def _encode_value(value: Any, where: str) -> Any:
 def _decode_value(value: Any) -> Any:
     """Invert :func:`_encode_value`."""
     if isinstance(value, dict):
+        if "$eos" in value:
+            from difflow.eos import PengRobinson, SRK
+            classes = {"PengRobinson": PengRobinson, "SRK": SRK}
+            if value["$eos"] not in classes:
+                raise SerializationError("Unknown EOS kind")
+            return classes[value["$eos"]](
+                {name: _decode_value(props) for name, props in value["species"]},
+                k_ij=_decode_value(value["k_ij"]))
         if REF_TAG in value:
             return _resolve_ref(value[REF_TAG])
         if ARRAY_TAG in value:
@@ -459,10 +473,20 @@ def constructor_extras(cls: type) -> list[str]:
     return required
 
 
+def instance_extras(operation: Any) -> list[str]:
+    """Required extras plus the built-in TP flash's configured optional models."""
+    from difflow.units.flash import Flash, EOSFlash
+    names = constructor_extras(type(operation))
+    optional = ("eos", "k_ij", "activity_model") if type(operation) is Flash else (
+        ("k_ij",) if type(operation) is EOSFlash else ())
+    return names + [name for name in optional
+                    if name not in names and getattr(operation, name, None) is not None]
+
+
 def _encode_extras(operation: Any, unit_name: str) -> dict:
     """Write the non-Params constructor arguments of one operation."""
     out = {}
-    for arg in constructor_extras(type(operation)):
+    for arg in instance_extras(operation):
         value = getattr(operation, arg, None)
         if value is None:
             continue

@@ -16,6 +16,8 @@
   typed into a box.
 -->
 <script>
+  import ActiveModel from './ActiveModel.svelte'
+  import ModelSelector from './ModelSelector.svelte'
   import { del, get, patch, post } from './api.js'
   import { render } from './math.js'
   import { feedEdit, feedFields, feedValues } from './model/feed.js'
@@ -262,7 +264,7 @@
   }
 
   let equations = $derived(
-    (docs?.equations ?? spec?.equations ?? []).map((latex) => ({
+    (unit?.runtime_model?.equations ?? docs?.equations ?? spec?.equations ?? []).map((latex) => ({
       latex,
       ...render(latex),
     })),
@@ -512,6 +514,16 @@
 
     {@render ports()}
 
+    {#if unit?.runtime_model}
+      {#if unit.runtime_model.selectable}
+        <ModelSelector model={unit.runtime_model} {busy}
+          onapply={(config) => onedit(() => patch(`/api/unit/${encodeURIComponent(unit.name)}`, {
+            equilibrium_model: config,
+          }))} />
+      {/if}
+      <ActiveModel model={unit.runtime_model} />
+    {/if}
+
     {#if extras.length}
       <h3>built with</h3>
       <dl class="params">
@@ -591,16 +603,16 @@
       {/each}
     {/if}
 
-    {#if docs?.numerical_method}
+    {#if unit?.runtime_model?.method ?? docs?.numerical_method}
       <h3>method</h3>
-      <p class="prose">{docs.numerical_method}</p>
+      <p class="prose">{unit?.runtime_model?.method ?? docs.numerical_method}</p>
     {/if}
 
-    {#if docs?.assumptions?.length}
+    {#if (unit?.runtime_model?.assumptions ?? docs?.assumptions)?.length}
       <details>
-        <summary>assumptions ({docs.assumptions.length})</summary>
+        <summary>assumptions</summary>
         <ul class="prose">
-          {#each docs.assumptions as a (a)}<li>{a}</li>{/each}
+          {#each (unit?.runtime_model?.assumptions ?? docs.assumptions) as a (a)}<li>{a}</li>{/each}
         </ul>
       </details>
     {/if}

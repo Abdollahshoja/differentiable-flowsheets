@@ -144,7 +144,8 @@ def live_extras(operation) -> dict:
     :mod:`difflow.serialize` cannot write.
     """
     out = {}
-    for arg in constructor_extras(type(operation)):
+    from difflow.serialize import instance_extras
+    for arg in instance_extras(operation):
         value = getattr(operation, arg, None)
         if value is not None:
             out[arg] = value
@@ -416,6 +417,11 @@ def rebuild(operation, unit_name: str, updates: dict):
             f"nothing on {unit_name!r} to set."
         )
     fields = {f.name for f in dataclasses.fields(params)}
+    from difflow.units.flash import Flash, EOSFlash
+    if (type(operation) in (Flash, EOSFlash) and "species_order" in updates
+            and (not isinstance(updates["species_order"], (list, tuple))
+                 or list(updates["species_order"]) != list(params.species_order))):
+        raise EditError("Rebuild the flash and its property package to change species order")
     unknown = sorted(set(updates) - fields)
     if unknown:
         raise EditError(

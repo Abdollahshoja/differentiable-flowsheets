@@ -1,0 +1,20 @@
+{
+  "base_commit": "086c56ec5c5ac242829f851b5a308dcdf33260b5",
+  "files": [
+    {
+      "path": "src/difflow/gui/frontend/src/lib/Inspector.svelte",
+      "before": "eeae5ff858fe32f82a9c463dcda8aeb30b6823dbe1caa5504a20e6067010f8e0",
+      "after": "3f0222c6f79216404d95c1a058e151d27a417eaa96861e6500f4e9f13cef5c60"
+    },
+    {
+      "path": "src/difflow/gui/static/app.js",
+      "before": "07df90ffb31f127df71798f4cebd98fcb40ce40ae480973ef12db80b70b79f6b",
+      "after": "e1fd3a578ef7b35a16cf68a9feb206001f1f6e331941a3f8f5de5fc7ab5f054c"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/model/inspector-active-model.test.js",
+      "before": null,
+      "after": "84b62992a322f1845152135544f93b657b7f81bc565465b8c8e8c0dfb411d8cd"
+    }
+  ]
+}

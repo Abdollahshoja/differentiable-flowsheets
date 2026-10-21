@@ -1,0 +1,70 @@
+{
+  "base_commit": "086c56ec5c5ac242829f851b5a308dcdf33260b5",
+  "files": [
+    {
+      "path": "src/difflow/serialize.py",
+      "before": "81d80f40118b7cbcfb139e7a60c16939f7023d33cf7ecbb623ff96bbdd9e40a0",
+      "after": "6a3c424f7de2bba059c4e11427d15239c9d4ec90ed2c5cc0c3025f8b4525e8a4"
+    },
+    {
+      "path": "src/difflow/codegen.py",
+      "before": "36bdf7bd5371aa73d1a069c332dfc83f9b6ed57605aac5373c2dc0ee1fed1606",
+      "after": "3159b103f1ad3b6747e5cdbf410130c3595cfc0d289ac3f7a1654177999388e1"
+    },
+    {
+      "path": "src/difflow/gui/edit.py",
+      "before": "d8619ad925dab2bcac515a80c8766277e560c1132b7e0d3b99daccb71cde2012",
+      "after": "da2c699b94c131851e663f0988d98b469ed680c670cbefbdabf26bc2d0ec62cd"
+    },
+    {
+      "path": "src/difflow/gui/session.py",
+      "before": "b0f794af6996589a0581c5ced7836a1cf533e3234776ef742c2b5faf11733d96",
+      "after": "5f266c2a0330da0d754a04649e0f52536b3e708d9a16110e01c3bf09b00782a7"
+    },
+    {
+      "path": "src/difflow/gui/active_model.py",
+      "before": "8a8672dcbfbac01f1466f8fbe706c46b00fcedc330165bd199b6a46e395af7e2",
+      "after": "551b69b7ed33a7fbb561e1bdb6b5efa65222e8d957e537a24f61b4183b8fef74"
+    },
+    {
+      "path": "src/difflow/gui/model_selection.py",
+      "before": null,
+      "after": "d377be1490bee6f656480559fb0f0cf067f3c431adad957308ff6b901f92126b"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/ModelSelector.svelte",
+      "before": null,
+      "after": "eee085155710fcf19a2298753f79d9da4e773b34a350c65a2c2a214c4a2c888c"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/Inspector.svelte",
+      "before": "3f0222c6f79216404d95c1a058e151d27a417eaa96861e6500f4e9f13cef5c60",
+      "after": "1a148f73c1eac5cedfc571f5449c763cc934cc95e0bb2a676145f6f074dcd30d"
+    },
+    {
+      "path": "src/difflow/gui/frontend/src/lib/model/inspector-active-model.test.js",
+      "before": "84b62992a322f1845152135544f93b657b7f81bc565465b8c8e8c0dfb411d8cd",
+      "after": "f492606a7fd352e959ac54037db1d12b7d587dfff1237ee6f85c2d70d966b969"
+    },
+    {
+      "path": "src/difflow/gui/static/app.js",
+      "before": "e1fd3a578ef7b35a16cf68a9feb206001f1f6e331941a3f8f5de5fc7ab5f054c",
+      "after": "124da82ae7e6fd8ef342751c554db71342d5f30593574a1c8e2ebc9cc06fadef"
+    },
+    {
+      "path": "src/difflow/gui/static/app.css",
+      "before": "3be7b3091bd80193cad7152e1a8780252e6845816fb148c8bd81bf69a0629b82",
+      "after": "1aa15ec7ccb261ea05560afca5c73b0e89f5ea2097cb4a586a9f9f58235e56e8"
+    },
+    {
+      "path": "docs/gui-active-model.md",
+      "before": "171e90113a5af11cdc468a689bd146a752716b1055c65144025733dfaef8024c",
+      "after": "e112bc500951607b9cc0e830553dd18c3e88ce56e7a4c3caa50f77d7ddf9195f"
+    },
+    {
+      "path": "tests/test_gui_model_selection.py",
+      "before": null,
+      "after": "3589dd6ed798dfd3fe501d6b26a1c337ed6e1dca3c6ae7f71d19702014848c09"
+    }
+  ]
+}
